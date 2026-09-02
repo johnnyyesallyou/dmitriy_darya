@@ -66,9 +66,6 @@ img{display:block;max-width:100%}
 .hero:after{width:48vw;height:48vw;right:-20vw;bottom:-12vw}
 #petals{position:absolute;inset:0;pointer-events:none}
 .hero-inner{text-align:center;position:relative;z-index:1;padding:70px 0}
-.hero-photo{width:min(220px,42vw);height:min(220px,42vw);border-radius:50%;overflow:hidden;margin:0 auto 34px;
-  border:1px solid rgba(90,72,63,.25);box-shadow:0 24px 46px rgba(46,36,32,.14)}
-.hero-photo img{width:100%;height:100%;object-fit:cover}
 .names{font-size:clamp(64px,12vw,150px);line-height:.75;letter-spacing:-.03em;text-shadow:0 12px 30px rgba(48,44,42,.04)}
 .names span{display:block}
 .names .amp{font-family:"EB Garamond",serif;font-style:italic;font-size:.5em;line-height:1.05;margin:6px 0}
@@ -104,8 +101,9 @@ img{display:block;max-width:100%}
 
 /* ---------- DATE BLOCK ---------- */
 .date-block{padding:105px 0;background:linear-gradient(180deg,#f3ece7 0%,#e7d9d1 100%)}
-.date-grid{display:grid;grid-template-columns:1fr 1px 1fr;align-items:center;gap:45px;text-align:center}
-.date-line{height:170px;background:linear-gradient(180deg,rgba(120,105,95,.15),rgba(120,105,95,.75),rgba(120,105,95,.15));width:1px}
+.date-grid{text-align:center}
+.date-grid > div{display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap}
+.date-line{display:none}
 .big-date{font-family:"Cormorant Garamond",serif;font-size:clamp(64px,9.5vw,118px);line-height:.75;letter-spacing:-.04em}
 .date-meta{display:block;margin-top:16px}
 .big-date small{display:block;font-family:Montserrat;font-size:11px;letter-spacing:.28em;text-transform:uppercase;line-height:1;margin-top:26px}
@@ -210,7 +208,7 @@ button:hover{background:transparent;color:var(--ink)}
 .confetti-piece{position:fixed;top:-20px;z-index:95;pointer-events:none;font-size:18px;will-change:transform,opacity}
 
 @media(max-width:720px){
-  .date-grid{grid-template-columns:1fr;gap:26px}.date-line{width:90px;height:1px;margin:auto}
+  .date-grid > div{gap:10px}
   .event{grid-template-columns:70px 1fr;gap:16px}.event h3{font-size:24px}
   .intro,.story,.timeline,.venue,.details,.gallery,.rsvp{padding:85px 0}
 }
@@ -231,7 +229,6 @@ button:hover{background:transparent;color:var(--ink)}
 <section class="hero">
   <canvas id="petals"></canvas>
   <div class="container hero-inner">
-    <div class="hero-photo reveal"><img src="images/couple.jpg" alt="Дмитрий и Дарья" loading="eager"></div>
     <div class="names reveal"><span>Дмитрий</span><span class="amp">&amp;</span><span>Дарья</span></div>
     <div class="hero-date reveal">26 · 11 · 2026</div>
     <div class="hero-sub reveal">Приглашаем вас разделить с нами день, с которого начинается наша семейная история.</div>
@@ -248,28 +245,6 @@ button:hover{background:transparent;color:var(--ink)}
   </div>
 </section>
 
-<!-- Раздел "Наша история" — сейчас с условными вехами и одним общим фото.
-     Пришлите 2–4 фото и реальные подписи/даты — заменю на настоящую историю. -->
-<section class="story">
-  <div class="container">
-    <div class="story-top">
-      <div class="eyebrow reveal">Немного о нас</div>
-      <div class="divider reveal"></div>
-      <h2 class="reveal">Наша история</h2>
-    </div>
-    <div class="story-grid">
-      <div class="story-photo reveal"><img src="images/couple-wide.jpg" alt="Дмитрий и Дарья"></div>
-      <div class="story-line reveal">
-        <ul class="milestones">
-          <li><span class="m-label">Как всё начиналось</span><h3>Знакомство</h3></li>
-          <li><span class="m-label">Шаг за шагом</span><h3>Наш путь друг к другу</h3></li>
-          <li><span class="m-label">26 ноября 2026</span><h3>Главное «да»</h3></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
 <section class="date-block">
   <div class="container">
     <div class="date-grid">
@@ -277,11 +252,6 @@ button:hover{background:transparent;color:var(--ink)}
         <div class="eyebrow reveal">Четверг</div>
         <div class="big-date reveal">26</div>
         <div class="eyebrow date-meta reveal">ноября</div>
-      </div>
-      <div class="date-line"></div>
-      <div>
-        <div class="eyebrow reveal">Начало церемонии</div>
-        <div class="big-date reveal">15:05</div>
         <div class="eyebrow date-meta reveal">2026</div>
       </div>
     </div>
@@ -294,10 +264,10 @@ button:hover{background:transparent;color:var(--ink)}
     <div class="divider reveal"></div>
     <h2 class="reveal" style="text-align:center;margin-bottom:60px">Программа</h2>
     <div class="events">
-      <div class="event reveal"><div class="time">14:45</div><div><h3>Сбор гостей</h3><p>Встречаемся перед началом церемонии</p></div></div>
-      <div class="event reveal"><div class="time">15:05</div><div><h3>Церемония</h3><p>Самый важный момент этого дня</p></div></div>
-      <div class="event reveal"><div class="time">16:00</div><div><h3>Поздравления</h3><p>Фотографии, общение и первые бокалы за нашу семью</p></div></div>
-      <div class="event reveal"><div class="time">17:00</div><div><h3>Праздничный вечер</h3><p>Ужин, музыка, танцы и всё то, ради чего мы собрались</p></div></div>
+      <div class="event reveal"><div class="time">16:30</div><div><h3>Сбор гостей</h3></div></div>
+      <div class="event reveal"><div class="time">17:00</div><div><h3>Праздничный ужин</h3></div></div>
+      <div class="event reveal"><div class="time">21:30</div><div><h3>Тортик</h3></div></div>
+      <div class="event reveal"><div class="time">23:00</div><div><h3>Финал вечера</h3></div></div>
     </div>
   </div>
 </section>
@@ -323,13 +293,6 @@ button:hover{background:transparent;color:var(--ink)}
   </div>
 </section>
 
-<section class="notice">
-  <div class="container reveal">
-    <h3>Праздник без детей</h3>
-    <p>Пусть этот вечер будет спокойным и по-настоящему романтичным для всех — убедительно просим вас не брать с собой детей.</p>
-  </div>
-</section>
-
 <section class="details">
   <div class="container">
     <div class="eyebrow reveal">Важная информация</div>
@@ -337,37 +300,20 @@ button:hover{background:transparent;color:var(--ink)}
     <div class="details-grid">
       <article class="card reveal">
         <div class="num">01</div>
-        <div><h3>Дресс-код</h3><p>Будем рады нарядным образам. Выбирайте то, в чём вам комфортно праздновать вместе с нами.</p></div>
+        <div><h3>Пожелания</h3><p>Свои теплые слова и пожелания приносите в сердцах, а подарки — в конверте.</p></div>
       </article>
       <article class="card reveal">
         <div class="num">02</div>
-        <div><h3>Пожелания</h3><p>Главный подарок для нас — ваше присутствие и хорошее настроение в этот день.</p></div>
+        <div><h3>Дресс-код</h3><p>У нас нет привязки к цветовой гамме, но есть просьба, чтобы девушки не были в белом цвете</p></p></div>
       </article>
       <article class="card reveal">
         <div class="num">03</div>
         <div>
-          <h3>Чат</h3>
-          <p>Приглашаем вас в чат для общения и актуальной информации.</p>
-          <a class="btn" href="https://t.me/+C3jbB-B3wpw4OTli" target="_blank" rel="noopener noreferrer">Присоединиться</a>
+          <h3>16+</h3>
+          <p>Мы бы хотели, чтобы в день нашей свадьбы вы вдоволь повеселились и отдохнули, поэтому решили устроить праздник без детей.</p>
         </div>
       </article>
     </div>
-  </div>
-</section>
-
-<!-- Галерея — пока 2 фото, структура готова принять больше. Пришлите ещё снимки — добавлю. -->
-<section class="gallery">
-  <div class="container">
-    <div class="gallery-top">
-      <div class="eyebrow reveal">Немного тепла</div>
-      <div class="divider reveal"></div>
-      <h2 class="reveal">Галерея</h2>
-    </div>
-    <div class="gallery-grid">
-      <figure class="wide reveal"><img src="images/couple-wide.jpg" alt="Дмитрий и Дарья" onclick="openLightbox(this.src)"></figure>
-      <figure class="reveal"><img src="images/hall.jpg" alt="Кантемировский зал" onclick="openLightbox(this.src)"></figure>
-    </div>
-    <p class="gallery-note reveal">Пришлите ещё несколько фотографий (5–10) — соберём полноценную галерею вместо этих двух карточек.</p>
   </div>
 </section>
 
@@ -390,10 +336,13 @@ button:hover{background:transparent;color:var(--ink)}
         <label><input type="radio" name="attend" value="Да" checked> Да, буду</label>
         <label><input type="radio" name="attend" value="Нет"> К сожалению, нет</label>
       </div>
-      <label>Нужен трансфер?</label>
+      <label>Предпочтение по напиткам</label>
       <div class="radio-row">
-        <label><input type="radio" name="transfer" value="Да" checked> Да</label>
-        <label><input type="radio" name="transfer" value="Нет"> Нет</label>
+        <label><input type="radio" name="drink" value="Шампанское" checked> Шампанское</label>
+        <label><input type="radio" name="drink" value="Белое вино"> Белое вино</label>
+        <label><input type="radio" name="drink" value="Красное вино"> Красное вино</label>
+        <label><input type="radio" name="drink" value="Виски"> Виски</label>
+        <label><input type="radio" name="drink" value="Безалкогольные напитки"> Безалкогольные напитки</label>
       </div>
       <button type="submit">Отправить ответ</button>
     </form>
@@ -450,11 +399,6 @@ function initReveals(){
         scrollTrigger:{trigger:el, start:'top 88%'}
       });
     });
-    // лёгкий параллакс фото в hero
-    gsap.to('.hero-photo', {
-      y: 40, ease:'none',
-      scrollTrigger:{trigger:'.hero', start:'top top', end:'bottom top', scrub:true}
-    });
   } else {
     document.querySelectorAll('.reveal').forEach(el=>el.classList.add('is-visible'));
   }
@@ -492,7 +436,7 @@ initReveals();
       if (p.y > h + 20){ Object.assign(p, makePetal(), {y:-20}); }
       ctx.save();
       ctx.translate(p.x,p.y); ctx.rotate(p.angle);
-      ctx.fillStyle = `rgba(139,117,105,${p.alpha})`;
+      ctx.fillStyle = `rgba(244,184,196,${p.alpha})`;
       ctx.beginPath();
       ctx.ellipse(0,0,p.r,p.r*1.6,0,0,Math.PI*2);
       ctx.fill();
@@ -586,17 +530,17 @@ form.addEventListener('submit', async (e)=>{
   e.preventDefault();
   const name = document.getElementById('name').value.trim();
   const attend = document.querySelector('input[name=attend]:checked').value;
-  const transfer = document.querySelector('input[name=transfer]:checked').value;
+  const drink = document.querySelector('input[name=drink]:checked').value;
 
   try{
     if (FORMSPREE_URL){
       const res = await fetch(FORMSPREE_URL, {
         method:'POST', headers:{'Accept':'application/json','Content-Type':'application/json'},
-        body: JSON.stringify({ name, attend, transfer })
+        body: JSON.stringify({ name, attend, drink })
       });
       if (!res.ok) throw new Error('Formspree error');
     } else if (BOT_TOKEN && CHAT_ID){
-      const text = `Ответ на приглашение\nИмя: ${name}\nПрисутствие: ${attend}\nТрансфер: ${transfer}`;
+      const text = `Ответ на приглашение\nИмя: ${name}\nПрисутствие: ${attend}\nНапиток: ${drink}`;
       const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
         method:'POST', headers:{'Content-Type':'application/json'},
         body: JSON.stringify({ chat_id: CHAT_ID, text })
