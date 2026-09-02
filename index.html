@@ -195,11 +195,12 @@ button:hover{background:transparent;color:var(--ink)}
 .footer{padding:80px 20px;text-align:center;background:var(--paper);border-top:1px solid rgba(120,105,95,.2)}
 .footer .names-small{font-family:"Cormorant Garamond";font-size:44px}
 
-/* ---------- MUSIC (скрыта, пока не подключён трек) ---------- */
+/* ---------- MUSIC ---------- */
 .music{position:fixed;right:20px;bottom:20px;width:48px;height:48px;border:1px solid rgba(48,44,42,.35);
-  border-radius:50%;background:rgba(245,240,236,.92);z-index:20;display:none;place-items:center;cursor:pointer;
+  border-radius:50%;background:rgba(245,240,236,.92);z-index:20;display:grid;place-items:center;cursor:pointer;
   box-shadow:0 12px 30px rgba(46,36,32,.08)}
 .music i{width:13px;height:13px;border-left:1px solid var(--ink);border-right:1px solid var(--ink);display:block}
+.music:not(.is-playing) i{border-left:0;border-right:0;width:0;height:0;border-top:7px solid transparent;border-bottom:7px solid transparent;border-left:11px solid var(--ink)}
 .toast{position:fixed;left:50%;bottom:85px;transform:translateX(-50%) translateY(20px);background:var(--ink);
   color:#fff;padding:14px 22px;font-size:12px;opacity:0;pointer-events:none;transition:.3s;z-index:30;border-radius:999px;max-width:90vw;text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -369,12 +370,9 @@ button:hover{background:transparent;color:var(--ink)}
   <div class="eyebrow" style="margin-top:15px">26 · 11 · 2026</div>
 </footer>
 
-<!-- Музыка: кнопка скрыта, пока не указан реальный файл.
-     Чтобы включить — положите mp3 рядом (например, в папку audio/) и впишите путь в src,
-     затем поменяйте .music{display:none} на display:grid в стилях выше. -->
-<button class="music" id="music" aria-label="Музыка"><i></i></button>
+<button class="music" id="music" aria-label="Поставить музыку на паузу" title="Поставить музыку на паузу"><i></i></button>
 <div class="toast" id="toast"></div>
-<audio id="audio" loop preload="none"></audio>
+<audio id="audio" loop preload="auto" autoplay src="audio/wedding-song.mp3"></audio>
 
 <!-- GSAP + ScrollTrigger — для плавных анимаций при скролле.
      Если CDN недоступен, сайт не сломается: сработает упрощённый резервный вариант ниже. -->
@@ -546,19 +544,31 @@ form.addEventListener('submit', async (e)=>{
   }
 });
 
-// ---------- Музыка (появляется только если добавлен реальный трек) ----------
+// ---------- Фоновая музыка ----------
 const audio = document.getElementById('audio');
 const musicButton = document.getElementById('music');
 let playing = false;
-if (audio.querySelector('source') || audio.src){
-  musicButton.style.display = 'grid';
+function updateMusicButton(){
+  playing = !audio.paused;
+  musicButton.classList.toggle('is-playing', playing);
+  const label = playing ? 'Поставить музыку на паузу' : 'Включить музыку';
+  musicButton.setAttribute('aria-label', label);
+  musicButton.setAttribute('title', label);
 }
+async function startMusic(){
+  try{ await audio.play(); }catch(err){ /* Браузер может разрешить звук только после клика. */ }
+  updateMusicButton();
+}
+audio.addEventListener('play', updateMusicButton);
+audio.addEventListener('pause', updateMusicButton);
 musicButton.addEventListener('click', async ()=>{
-  try{
-    if (!playing){ await audio.play(); playing = true; }
-    else{ audio.pause(); playing = false; }
-  }catch(err){ showToast('Не удалось запустить музыку.'); }
+  if (audio.paused) await startMusic();
+  else audio.pause();
 });
+window.addEventListener('load', startMusic);
+window.addEventListener('pointerdown', startMusic, {once:true});
+window.addEventListener('keydown', startMusic, {once:true});
+updateMusicButton();
 </script>
 
 </body>
