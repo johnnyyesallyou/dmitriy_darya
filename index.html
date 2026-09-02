@@ -510,10 +510,11 @@ function burstConfetti(){
   }
 }
 
-// ---------- RSVP: Formspree → Telegram-бот → ссылка на чат (первое, что настроено) ----------
-// Чтобы включить Formspree: зарегистрируйтесь на formspree.io, создайте форму,
-// вставьте свой адрес вида https://formspree.io/f/xxxxxxx в FORMSPREE_URL.
-// Про Telegram-бота — см. предупреждение ниже, не храните токен в открытом виде на реальном сайте.
+// ---------- RSVP → Telegram ----------
+// GitHub Pages не поддерживает серверные маршруты, поэтому запрос отправляется
+// напрямую в Telegram API. Токен бота виден в исходном коде страницы.
+const TELEGRAM_BOT_TOKEN = '8543640023:AAEf4uUtbZVyYIrIWty8NqDQpkKyPfkN3cc';
+const TELEGRAM_CHAT_ID = '863767019';
 const form = document.getElementById('rsvpForm');
 const toast = document.getElementById('toast');
 function showToast(text){
@@ -528,13 +529,14 @@ form.addEventListener('submit', async (e)=>{
   const drink = document.querySelector('input[name=drink]:checked').value;
 
   try{
-    const res = await fetch('/api/rsvp', {
+    const text = `Ответ на приглашение\nИмя: ${name}\nПрисутствие: ${attend}\nПредпочтение по напиткам: ${drink}`;
+    const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ name, attend, drink })
+      body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text })
     });
     const result = await res.json();
-    if (!res.ok || !result.ok) throw new Error(result.error || 'Telegram error');
+    if (!res.ok || !result.ok) throw new Error(result.description || 'Telegram error');
     form.reset();
     showToast('Спасибо, мы получили ответ!');
     burstConfetti();
